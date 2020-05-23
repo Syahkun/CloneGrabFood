@@ -1,0 +1,132 @@
+body {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.logo-green {
+  display: none;
+}
+
+/* ======================navigation======================== */
+
+.logo-size {
+  width: 20vmin;
+  margin: 3vmin 0 3vmin 10vmin;
+}
+
+nav.navbar {
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  width: 100%;
+  z-index: 1;
+  position: fixed;
+  margin-left: -16px;
+}
+
+nav.navbar.transparent {
+  background-color: #ffffff;
+}
+
+.display-none {
+  display: none;
+}
+
+/* ======================navigation2======================== */
+#nav-result {
+  background-color: #ffffff;
+}
+
+/* ======================Card-intro======================== */
+
+.Card-intro {
+  /* margin: -70vmin 0 0 17vmin; */
+  width: 23rem;
+}
+
+/* ======================introduction======================== */
+
+.crop {
+  width: 100%;
+  height: 598px;
+  overflow: hidden;
+}
+
+.crop img {
+  width: 100%;
+  /* height: 727px; */
+  margin: -145px 0 0 -0px;
+}
+
+/* .wall-intro {
+  width: 100%;
+} */
+
+@media only screen and (max-width: 600px) {
+  .wall-intro {
+    display: none;
+  }
+  .Card-intro {
+    margin: 0 0 0 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  /* .wall-intro {
+    display: none;
+  } */
+  .Card-intro {
+    margin: -22rem 0 0 5rem;
+  }
+}
+
+.input-search {
+  height: 7vmin;
+  border-color: green;
+  border-radius: 3px;
+}
+
+/* .button-search {
+  color: green;
+} */
+
+/* ===============================cardmenu===================================== */
+
+.Card-menu {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  border: 0;
+}
+
+.card-menu {
+  border-radius: 10px;
+}
+.title-menu {
+  font-weight: bold;
+}
+
+.bg-fitur {
+  background-color: #f7f7f7;
+}
+/* ==============================fiturintro======================================== */
+
+.mar-fitur {
+  margin-top: 3rem;
+}
+
+#card-fitur {
+  background-color: #f7f7f7;
+  border: 0;
+  margin-top: 8rem;
+  text-align: center;
+}
+
+#search2 {
+  border-radius: 2vmax;
+  width: 91vmax;
+}
