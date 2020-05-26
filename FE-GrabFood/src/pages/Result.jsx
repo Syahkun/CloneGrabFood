@@ -5,20 +5,21 @@ import { Container, Row, Col } from "react-bootstrap";
 import Navigation from "../components/Navigation2";
 // import Intro from "../components/Introduction";
 // import CardIntro from "../components/CardIntro";
-import CardFood from "../components/CardFood";
+import CardRestoran from "../components/CardRestoran";
 import FiturIntro from "../components/FiturIntro";
 import Footer from "../components/Footer";
 import FooterFinal from "../components/FooterFinal";
 import SearchPage from "../components/Search2";
 import BreadCrumb from "../components/BreadCrumbs";
+import CarouselRes from "../components/CarouselRes";
 //import actions
 
 class Result extends Component {
   render() {
     console.warn("cek props result", this.props);
 
-    const listMakanans = this.props.dataMakanan.listMakanan;
-    console.warn("cek list maknans", listMakanans);
+    const listRestorans = this.props.dataRestoran.listRestoran;
+    console.warn("cek list maknans", listRestorans);
 
     const splitArray = (array, size) => {
       if (!array.length) {
@@ -35,18 +36,16 @@ class Result extends Component {
 
     // const { listProducts, isLoading } = this.props.dataproducts;
     // const listProducts = this.props.dataproducts.listProducts;
-    const splitListMakanan = splitArray(listMakanans, 4);
+    const splitlistRestoran = splitArray(listRestorans, 4);
     return (
       <div>
         <React.Fragment>
           <Container fluid style={{ marginTop: "-7vmax" }}>
             <Navigation />
-            {/* <Row>
-              <CardIntro />
-            </Row> */}
           </Container>
           <Container fluid className="px-5 py-5" style={{ marginTop: "7vmax" }}>
             <SearchPage />
+            <CarouselRes />
           </Container>
           <Container fluid className="px-5">
             <Container fluid className="mt-3">
@@ -59,17 +58,17 @@ class Result extends Component {
             </Container>
             <h1 className="pb-2">
               {this.props.location.pathname.replace(/[^\w\s]/gi, "")}&nbsp;di{" "}
-              {this.props.dataMakanan.lokasi}
+              {this.props.dataRestoran.lokasi}
             </h1>
           </Container>
           <Container fluid className="px-5">
             <Col lg={2}></Col>
-            {splitListMakanan.map((baris) => (
+            {splitlistRestoran.map((baris) => (
               <Row className="mb-4">
                 {baris.map((item, value) => (
                   <Col>
-                    <CardFood
-                      nama_makanan={item.nama}
+                    <CardRestoran
+                      nama_restoran={item.nama}
                       gambar={item.gambar}
                       promo={item.promo}
                     />
@@ -100,7 +99,7 @@ class Result extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    dataMakanan: state.makanan,
+    dataRestoran: state.restoran,
     dataMenu: state.menu,
   };
 };
