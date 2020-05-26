@@ -1,3 +1,4 @@
+
 import json
 import config
 import os
@@ -66,13 +67,15 @@ def after_request(response):
                          }))
     return response
 
-from blueprints.makanan.resources import bp_makanan
-from blueprints.menu.resources import bp_menu
-from blueprints.login import bp_login
+from blueprints.restoran.resources import bp_Restoran
 from blueprints.pengguna.resources import bp_pengguna
+from blueprints.lokasi.resources import bp_lokasi
+from blueprints.login import bp_login
+from blueprints.menu.resources import bp_menu
 
 app.register_blueprint(bp_pengguna, url_prefix='/pengguna')
-app.register_blueprint(bp_makanan, url_prefix='/makanan')
+app.register_blueprint(bp_Restoran, url_prefix='/Restoran')
+app.register_blueprint(bp_lokasi, url_prefix='/lokasi')
 app.register_blueprint(bp_login, url_prefix='/login')
 app.register_blueprint(bp_menu, url_prefix='/menu')
 

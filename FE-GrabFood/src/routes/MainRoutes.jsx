@@ -5,7 +5,8 @@ import store from "../store";
 
 //import pages
 import Home from "../pages/Home";
-import Result from "../pages/Result";
+import Restoran from "../pages/Result";
+// import Eks from "../pages/Eks2";
 
 const MainRoutes = () => {
   return (
@@ -13,8 +14,9 @@ const MainRoutes = () => {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
-          {/* <Route exact path="/Result" component={Result} /> */}
-          <Route exact path="/:category" component={Result} />
+          <Route exact path="/Restoran" component={Restoran} />
+          <Route exact path="/:category" component={Restoran} />
+          {/* <Route exact path="/eks" component={Eks} /> */}
         </Switch>
       </BrowserRouter>
     </Provider>

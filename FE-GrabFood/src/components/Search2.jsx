@@ -8,10 +8,14 @@ const SearchPage = () => {
         <Form inline>
           <FormControl
             type="search"
-            style={{ backgroundColor: "#f7f7f7" }}
+            style={{
+              backgroundColor: "#f7f7f7",
+              marginTop: "50px",
+              width: "210vmin",
+            }}
             id="search2"
             placeholder="Search"
-            className="mr-sm-2"
+            className="mr-sm-2 W-100"
           />
         </Form>
       </Row>

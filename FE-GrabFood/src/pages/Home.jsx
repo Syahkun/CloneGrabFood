@@ -12,24 +12,29 @@ import FooterFinal from "../components/FooterFinal";
 //import actions
 import { getListMenu } from "../store/actions/menuActions";
 import {
-  getListMakananByCategory,
+  getListRestoranByCategory,
   changeInputLokasi,
-} from "../store/actions/makananActions";
+  getListLokasiRestoran
+} from "../store/actions/restoranActions";
 import { connect } from "react-redux";
 
 class Home extends Component {
   componentDidMount = async () => {
     //get list menu from API
     this.props.getListMenu();
+    // this.props.getListRestoranByCategory();
+    this.props.getListLokasiRestoran();
     console.warn("cek props home", this.props);
-    console.warn("cek lokasi", this.props.dataMakanan.lokasi);
+    console.warn("cek props getListRestoranByCategory", this.props.getListRestoranByCategory());
+    // console.warn("cek lokasi", this.props.dataRestoran.lokasi);
   };
 
   handleRequestCategoryMakanan = async (category, lokasi) => {
     await this.props.history.replace("/" + category);
-    this.props.getListMakananByCategory(category, lokasi);
+    this.props.getListRestoranByCategory(category, lokasi);
   };
   render() {
+    // const listKota = this.props.dataRestoran.listMakanan.kota;
     const listMenu = this.props.dataMenu.listMenu;
     const splitArray = (array, size) => {
       if (!array.length) {
@@ -40,6 +45,8 @@ class Home extends Component {
       return [head, ...splitArray(tail, size)];
     };
     const splitListMenu = splitArray(listMenu, 4);
+    const listLokasixxx = this.props.dataRestoran.listLokasi
+    console.warn("list lokasi xxx", listLokasixxx)
     return (
       <div>
         <Container fluid>
@@ -48,10 +55,17 @@ class Home extends Component {
             <Intro />
           </Row>
           <Row>
+            {/* {listRestoran.map((item, key) => ( */}
             <CardIntro
+              listLokasi={listLokasixxx}
               inputLokasi={this.props.changeInputLokasi}
-              lokasi={this.props.dataMakanan.lokasi}
+              // lokasi={this.props.dataRestoran.listRestoran.lokasi_restoran}
+              getListCategory={(category, lokasi) =>
+                this.handleRequestCategoryMakanan(category, lokasi)
+              }
+              lokasi={this.props.dataRestoran.lokasi}
             />
+            {/* ))}  */}
           </Row>
         </Container>
         <Container fluid className="px-5">
@@ -73,7 +87,7 @@ class Home extends Component {
                     getListCategory={(category, lokasi) =>
                       this.handleRequestCategoryMakanan(category, lokasi)
                     }
-                    lokasi={this.props.dataMakanan.lokasi}
+                    lokasi={this.props.dataRestoran.lokasi}
                   />
                 </Col>
               ))}
@@ -101,14 +115,15 @@ class Home extends Component {
 
 const mapDispatchToProps = {
   getListMenu,
-  getListMakananByCategory,
-  changeInputLokasi,
+  getListRestoranByCategory,
+  getListLokasiRestoran,
+  changeInputLokasi: (el) => changeInputLokasi(el) ,
 };
 
 const mapStateToProps = (state) => {
   return {
     dataMenu: state.menu,
-    dataMakanan: state.makanan,
+    dataRestoran: state.restoran,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -4,13 +4,13 @@ import thunk from "redux-thunk";
 //import reducer
 // import newsReducer from "./reducer/newsReducer";
 import menuReducer from "./reducer/menuReduce";
-import makananReducer from "./reducer/makananReduce";
+import restoranReducer from "./reducer/restoranReduce";
 import penggunaReducer from "./reducer/penggunaReduce";
 
 const rootReducer = combineReducers({
   // news: newsReducer,
   menu: menuReducer,
-  makanan: makananReducer,
+  restoran: restoranReducer,
   pengguna: penggunaReducer,
 
   // movies: moviesReducer,
