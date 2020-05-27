@@ -14,7 +14,16 @@ import BreadCrumb from "../components/BreadCrumbs";
 import CarouselRes from "../components/CarouselRes";
 //import actions
 
+import {
+  getListRestoranByCategory,
+  changeInputSearch,
+} from "../store/actions/restoranActions";
+
 class Result extends Component {
+  handleRequestCategorySearch = async (keyword, lokasi) => {
+    await this.props.history.replace("/search=" + keyword);
+    this.props.getListRestoranByCategory(keyword, lokasi);
+  };
   render() {
     console.warn("cek props result", this.props);
 
@@ -29,22 +38,20 @@ class Result extends Component {
       const tail = array.slice(size);
       return [head, ...splitArray(tail, size)];
     };
-
-    // const removalSysmbol = (str) => {
-    //   str.replace(/[^\w\s]/gi, "");
-    // };
-
-    // const { listProducts, isLoading } = this.props.dataproducts;
-    // const listProducts = this.props.dataproducts.listProducts;
     const splitlistRestoran = splitArray(listRestorans, 4);
     return (
       <div>
         <React.Fragment>
           <Container fluid style={{ marginTop: "-7vmax" }}>
-            <Navigation />
+            <Navigation lokasi={this.props.dataRestoran.lokasi} />
           </Container>
           <Container fluid className="px-5 py-5" style={{ marginTop: "7vmax" }}>
-            <SearchPage />
+            <SearchPage
+              inputKeyword={this.props.changeInputSearch}
+              handleRequestSearch={this.handleRequestCategorySearch}
+              lokasi={this.props.dataRestoran.lokasi}
+              keyword={this.props.dataRestoran.search}
+            />
             <CarouselRes />
           </Container>
           <Container fluid className="px-5">
@@ -97,6 +104,11 @@ class Result extends Component {
   }
 }
 
+const mapDispatchToProps = {
+  getListRestoranByCategory,
+  changeInputSearch: (el) => changeInputSearch(el),
+};
+
 const mapStateToProps = (state) => {
   return {
     dataRestoran: state.restoran,
@@ -104,4 +116,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Result);
+export default connect(mapStateToProps, mapDispatchToProps)(Result);

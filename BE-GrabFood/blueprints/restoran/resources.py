@@ -50,7 +50,6 @@ class RestoranResource(Resource):
         db.session.commit()
         return {'status': 'DELETED'}, 200
 
- 
         # parser = reqparse.RequestParser()
         # parser.add_argument('p', type=int, location='args', default=1)
         # parser.add_argument('rp', type=int, location='args', default=25)
@@ -68,13 +67,13 @@ class RestoranResource(Resource):
         #     result_respon_restoran = marshal(
         #         respon_restoran, Restoran.response_fields)
         #     lokasi_list['restoran'] = result_respon_restoran
-            
+
         #     lokasi_menu = Menu.query.filter_by(id= lokasi_list['restoran']['menu_id']).first()
         #     result_lokasi_menu = marshal(lokasi_menu, Menu.response_fields)
         #     lokasi_list['restoran']['menu'] = result_lokasi_menu
-            
+
         #     # respon_restoran_menu =Menu.query.filter_by(id=lokasi_list['menu_id']).first()
-            
+
         #     rows.append(lokasi_list)
 
         # return rows, 200
@@ -92,21 +91,63 @@ class DaftarRestoran(Resource):
 
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
-            restoran_list=(marshal(row, Restoran.response_fields))
-            respon_lokasi = Lokasi.query.filter_by(id=restoran_list['lokasi_id']).first()
-            result_respon_lokasi = marshal(respon_lokasi, Lokasi.response_fields)
+            restoran_list = (marshal(row, Restoran.response_fields))
+            respon_lokasi = Lokasi.query.filter_by(
+                id=restoran_list['lokasi_id']).first()
+            result_respon_lokasi = marshal(
+                respon_lokasi, Lokasi.response_fields)
             restoran_list['lokasi'] = result_respon_lokasi
-            
-            restoran_menu = Menu.query.filter_by(id=restoran_list['menu_id']).first()
+
+            restoran_menu = Menu.query.filter_by(
+                id=restoran_list['menu_id']).first()
             result_respon_menu = marshal(restoran_menu, Menu.response_fields)
             restoran_list['menu'] = result_respon_menu
-            
-            rows.append(restoran_list)       
+
+            rows.append(restoran_list)
+
+        return rows, 200
+
+
+class RestoranSearch(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("keyword", location="args")
+        parser.add_argument("location", location="args")
+        parser.add_argument('p', type=int, location='args', default=1)
+        parser.add_argument('rp', type=int, location='args', default=20)
+
+        args = parser.parse_args()
+        offset = (args['p']*args['rp'])-args['rp']
+
+        if args['keyword'] is not None:
+            restoran = Restoran.query.filter(Restoran.nama.like("%"+args['keyword']+"%") |
+                                             Menu.nama_menu.like("%"+args['keyword']+"%"))
+        if args['location'] is not None:
+            restoran = restoran.filter(
+                Lokasi.lokasi_restoran.like("%"+args['location']+"%"))
+
+        rows = []
+        for row in restoran.limit(args['rp']).offset(offset).all():
+            restoran_list = (marshal(row, Restoran.response_fields))
+            respon_lokasi = Lokasi.query.filter_by(
+                id=restoran_list['lokasi_id']).first()
+            result_respon_lokasi = marshal(
+                respon_lokasi, Lokasi.response_fields)
+            restoran_list['lokasi'] = result_respon_lokasi
+
+            restoran_menu = Menu.query.filter_by(
+                id=restoran_list['menu_id']).first()
+            result_respon_menu = marshal(
+                restoran_menu, Menu.response_fields)
+            restoran_list['menu'] = result_respon_menu
+
+            rows.append(restoran_list)
 
         return rows, 200
 
 
 api.add_resource(DaftarRestoran, '', '/daftar')
 api.add_resource(RestoranResource, '', '/<id>')
+api.add_resource(RestoranSearch, '', '/search')
 
 # test

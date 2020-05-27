@@ -16,6 +16,7 @@ const MainRoutes = () => {
           <Route exact path="/" component={Home} />
           <Route exact path="/Restoran" component={Restoran} />
           <Route exact path="/:category" component={Restoran} />
+          <Route exact path="/search=:keyword" component={Restoran} />
           {/* <Route exact path="/eks" component={Eks} /> */}
         </Switch>
       </BrowserRouter>
