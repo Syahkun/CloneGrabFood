@@ -5,6 +5,7 @@ import { Navbar, FormControl, Button, Form } from "react-bootstrap";
 // import $ from "jquery";
 
 const Navigation = (props) => {
+  console.warn("cek navi 2", props);
   return (
     <div className="">
       <Navbar id="nav-result">
@@ -21,7 +22,12 @@ const Navigation = (props) => {
         </Navbar.Brand>
         <Navbar.Toggle />
         <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+          <FormControl
+            value={props.lokasi}
+            type="text"
+            placeholder="Search"
+            className="mr-sm-2"
+          />
           <Button variant="outline-success">Search</Button>
         </Form>
         <Navbar.Collapse>
