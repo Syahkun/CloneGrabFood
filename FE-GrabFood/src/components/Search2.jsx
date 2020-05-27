@@ -9,7 +9,7 @@ const SearchPage = (props) => {
         <Form inline>
           <FormControl
             type="search"
-            onChange={(el) => props.inputKeyword(el)}
+            onChange={props.inputKeyword}
             value={props.keyword}
             name="keyword"
             style={{

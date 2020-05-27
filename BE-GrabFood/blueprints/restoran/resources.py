@@ -112,19 +112,21 @@ class RestoranSearch(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument("keyword", location="args")
-        parser.add_argument("location", location="args")
+        # parser.add_argument("location", location="args")
         parser.add_argument('p', type=int, location='args', default=1)
         parser.add_argument('rp', type=int, location='args', default=20)
 
         args = parser.parse_args()
         offset = (args['p']*args['rp'])-args['rp']
 
+        # if args['location'] is not None:
+        #     restoran = Restoran.query.filter(
+        #         Lokasi.lokasi_restoran.like(args['location']))
+
         if args['keyword'] is not None:
-            restoran = Restoran.query.filter(Restoran.nama.like("%"+args['keyword']+"%") |
-                                             Menu.nama_menu.like("%"+args['keyword']+"%"))
-        if args['location'] is not None:
-            restoran = restoran.filter(
-                Lokasi.lokasi_restoran.like("%"+args['location']+"%"))
+            restoran = Restoran.query.filter(
+                Restoran.nama.like("%"+args['keyword']+"%") |
+                Menu.nama_menu.like("%"+args['keyword']+"%"))
 
         rows = []
         for row in restoran.limit(args['rp']).offset(offset).all():

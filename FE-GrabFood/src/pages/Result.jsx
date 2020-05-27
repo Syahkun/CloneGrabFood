@@ -15,14 +15,14 @@ import CarouselRes from "../components/CarouselRes";
 //import actions
 
 import {
-  getListRestoranByCategory,
+  getListRestoranBySearch,
   changeInputSearch,
 } from "../store/actions/restoranActions";
 
 class Result extends Component {
   handleRequestCategorySearch = async (keyword, lokasi) => {
     await this.props.history.replace("/search=" + keyword);
-    this.props.getListRestoranByCategory(keyword, lokasi);
+    this.props.getListRestoranBySearch(keyword, lokasi);
   };
   render() {
     console.warn("cek props result", this.props);
@@ -47,7 +47,7 @@ class Result extends Component {
           </Container>
           <Container fluid className="px-5 py-5" style={{ marginTop: "7vmax" }}>
             <SearchPage
-              inputKeyword={this.props.changeInputSearch}
+              inputKeyword={(event) => this.props.changeInputSearch(event)}
               handleRequestSearch={this.handleRequestCategorySearch}
               lokasi={this.props.dataRestoran.lokasi}
               keyword={this.props.dataRestoran.search}
@@ -105,14 +105,14 @@ class Result extends Component {
 }
 
 const mapDispatchToProps = {
-  getListRestoranByCategory,
+  getListRestoranBySearch,
   changeInputSearch: (el) => changeInputSearch(el),
 };
 
 const mapStateToProps = (state) => {
   return {
     dataRestoran: state.restoran,
-    dataMenu: state.menu,
+    // dataMenu: state.menu,
   };
 };
 
