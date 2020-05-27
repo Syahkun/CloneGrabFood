@@ -35,6 +35,7 @@ export default function mekananReducer(stateRestoran = initialState, action) {
         ...stateRestoran,
         [action.payload.target.name]: action.payload.target.value,
         search: action.payload.target.value,
+        listRestoran: action.payload,
       };
     case "ACTIVATE_LOADING":
       return {
