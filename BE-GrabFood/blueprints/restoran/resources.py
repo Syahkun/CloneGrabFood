@@ -31,10 +31,15 @@ class RestoranResource(Resource):
         parser.add_argument('kota', location='json')
         parser.add_argument('menu_id', location='json')
         parser.add_argument('lokasi_id', location='json')
+        parser.add_argument('lat', location='json')
+        parser.add_argument('lon', location='json')
+        parser.add_argument('program', location='json')
+        parser.add_argument('restoran_pilihan', location='json', type=bool)
         args = parser.parse_args()
 
         result = Restoran(args['nama'], args['gambar'], args['gambar1'],
-                          args['gambar2'], args['harga'], args['promo'], args['diskon'], args['menu_id'], args['lokasi_id'])
+                          args['gambar2'], args['harga'], args['promo'], args['diskon'],
+                          args['menu_id'], args['lokasi_id'], args['lat'], args['lon'], args['program'], args['restoran_pilihan'])
 
         db.session.add(result)
         db.session.commit()
@@ -111,41 +116,123 @@ class DaftarRestoran(Resource):
 class RestoranSearch(Resource):
     def get(self):
         parser = reqparse.RequestParser()
+        parser.add_argument("location", location="args")
         parser.add_argument("keyword", location="args")
-        # parser.add_argument("location", location="args")
         parser.add_argument('p', type=int, location='args', default=1)
         parser.add_argument('rp', type=int, location='args', default=20)
 
         args = parser.parse_args()
         offset = (args['p']*args['rp'])-args['rp']
 
-        # if args['location'] is not None:
-        #     restoran = Restoran.query.filter(
-        #         Lokasi.lokasi_restoran.like(args['location']))
-
-        if args['keyword'] is not None:
+        if args['keyword'] is not None and args['location'] is not None:
             restoran = Restoran.query.filter(
-                Restoran.nama.like("%"+args['keyword']+"%") |
-                Menu.nama_menu.like("%"+args['keyword']+"%"))
+                Restoran.nama.like("%"+args['keyword']+"%"))
+            lokasi = Lokasi.query.filter(
+                Lokasi.lokasi_restoran.like("%"+args['location']+"%")).all()
+            locs_resto = []
+            for locs in lokasi:
+                lokasi_id = locs.id
+                lokasi_resto = restoran.filter_by(
+                    lokasi_id=lokasi_id)
+                locs_resto.append(lokasi_resto)
+            rows = []
+            print(locs_resto)
+            for nesrow in locs_resto:
+                for row in nesrow:
+                    restoran_list = (marshal(row, Restoran.response_fields))
+                    respon_lokasi = Lokasi.query.filter_by(
+                        id=restoran_list['lokasi_id']).first()
+                    result_respon_lokasi = marshal(
+                        respon_lokasi, Lokasi.response_fields)
+                    restoran_list['lokasi'] = result_respon_lokasi
+                    restoran_menu = Menu.query.filter_by(
+                        id=restoran_list['menu_id']).first()
+                    result_respon_menu = marshal(
+                        restoran_menu, Menu.response_fields)
+                    restoran_list['menu'] = result_respon_menu
 
-        rows = []
-        for row in restoran.limit(args['rp']).offset(offset).all():
-            restoran_list = (marshal(row, Restoran.response_fields))
-            respon_lokasi = Lokasi.query.filter_by(
-                id=restoran_list['lokasi_id']).first()
-            result_respon_lokasi = marshal(
-                respon_lokasi, Lokasi.response_fields)
-            restoran_list['lokasi'] = result_respon_lokasi
+                    rows.append(restoran_list)
+            return rows, 200
 
-            restoran_menu = Menu.query.filter_by(
-                id=restoran_list['menu_id']).first()
-            result_respon_menu = marshal(
-                restoran_menu, Menu.response_fields)
-            restoran_list['menu'] = result_respon_menu
+        elif args['keyword'] is None and args['location'] is not None:
+            lokasi = Lokasi.query.filter(
+                Lokasi.lokasi_restoran.like("%"+args['location']+"%")).all()
+            locs_resto = []
+            for locs in lokasi:
+                lokasi_id = locs.id
+                lokasi_resto = Restoran.query.filter_by(
+                    lokasi_id=lokasi_id)
+                locs_resto.append(lokasi_resto)
+            rows = []
+            print(locs_resto)
+            for nesrow in locs_resto:
+                for row in nesrow:
+                    restoran_list = (marshal(row, Restoran.response_fields))
+                    respon_lokasi = Lokasi.query.filter_by(
+                        id=restoran_list['lokasi_id']).first()
+                    result_respon_lokasi = marshal(
+                        respon_lokasi, Lokasi.response_fields)
+                    restoran_list['lokasi'] = result_respon_lokasi
+                    restoran_menu = Menu.query.filter_by(
+                        id=restoran_list['menu_id']).first()
+                    result_respon_menu = marshal(
+                        restoran_menu, Menu.response_fields)
+                    restoran_list['menu'] = result_respon_menu
 
-            rows.append(restoran_list)
+                    rows.append(restoran_list)
+            return rows, 200
 
-        return rows, 200
+        elif args['keyword'] is not None and args['location'] is None:
+            restoran = Restoran.query.filter(
+                Restoran.nama.like("%"+args['keyword']+"%"))
+            rows = []
+            print(restoran)
+            for row in restoran:
+                restoran_list = (marshal(row, Restoran.response_fields))
+                respon_lokasi = Lokasi.query.filter_by(
+                    id=restoran_list['lokasi_id']).first()
+                result_respon_lokasi = marshal(
+                    respon_lokasi, Lokasi.response_fields)
+                restoran_list['lokasi'] = result_respon_lokasi
+                restoran_menu = Menu.query.filter_by(
+                    id=restoran_list['menu_id']).first()
+                result_respon_menu = marshal(
+                    restoran_menu, Menu.response_fields)
+                restoran_list['menu'] = result_respon_menu
+
+                rows.append(restoran_list)
+
+            return rows, 200
+
+        # if args['location'] is not None:
+        #     restoran = Lokasi.query.filter(
+        #         Lokasi.lokasi_restoran.like("%"+args['location'])+"%")
+
+        # if args['keyword'] is not None:
+        #     restoran = Restoran.query.filter(
+        #         Restoran.nama.like("%"+args['keyword']+"%"))
+
+        # rows = []
+        # for row in restoran:
+        #     rows.append(marshal(row, Lokasi.response_fields))
+
+        # rows = []
+        # for row in restoran.limit(args['rp']).offset(offset).all():
+        #     restoran_list = (marshal(row, Restoran.response_fields))
+        #     respon_lokasi = Lokasi.query.filter_by(
+        #         id=restoran_list['lokasi_id']).first()
+        #     result_respon_lokasi = marshal(
+        #         respon_lokasi, Lokasi.response_fields)
+        #     restoran_list['lokasi'] = result_respon_lokasi
+        #     restoran_menu = Menu.query.filter_by(
+        #         id=restoran_list['menu_id']).first()
+        #     result_respon_menu = marshal(
+        #         restoran_menu, Menu.response_fields)
+        #     restoran_list['menu'] = result_respon_menu
+
+        #     rows.append(restoran_list)
+
+        # return marshal(restoran, Restoran.response_fields), 200
 
 
 api.add_resource(DaftarRestoran, '', '/daftar')

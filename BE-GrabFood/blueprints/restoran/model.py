@@ -23,8 +23,10 @@ class Restoran(db.Model):
         db.Integer, db.ForeignKey('table_menu.id'))
     lokasi_id = db.Column(
         db.Integer, db.ForeignKey('table_lokasi.id'))
-    # table_lokasi = db.relationship(
-    #     'Lokasi', backref="table_restoran", lazy=True)
+    lat = db.Column(db.Float)
+    lon = db.Column(db.Float)
+    program = db.Column(db.String(255))
+    restoran_pilihan = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
@@ -41,11 +43,15 @@ class Restoran(db.Model):
         'kota': fields.String,
         'menu_id': fields.Integer,
         'lokasi_id': fields.Integer,
+        'lat': fields.Float,
+        'lon': fields.Float,
+        'program': fields.String,
+        'restoran_pilihan': fields.Boolean,
         'created_at': fields.DateTime,
         'updated_at': fields.DateTime
     }
 
-    def __init__(self, nama, gambar, gambar1, gambar2, harga, promo, diskon, menu_id, lokasi_id):
+    def __init__(self, nama, gambar, gambar1, gambar2, harga, promo, diskon, menu_id, lokasi_id, lat, lon, program, restoran_pilihan):
         self.nama = nama
         self.gambar = gambar
         self.gambar1 = gambar1
@@ -55,6 +61,10 @@ class Restoran(db.Model):
         self.diskon = diskon
         self.menu_id = menu_id
         self.lokasi_id = lokasi_id
+        self.lat = lat
+        self.lon = lon
+        self.program = program
+        self.restoran_pilihan = restoran_pilihan
 
     def __repr__(self):
         return '<Restoran %r>' % self.id

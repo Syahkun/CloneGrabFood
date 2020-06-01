@@ -17,11 +17,12 @@ class LokasiResource(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('lokasi_restoran', location='json', required=True)
-        # parser.add_argument('restoran_id', location='json', required=True)
+        parser.add_argument('lat', location='json')
+        parser.add_argument('lon', location='json')
 
         args = parser.parse_args()
 
-        result = Lokasi(args['lokasi_restoran'])
+        result = Lokasi(args['lokasi_restoran'], args['lat'], args['lon'])
         db.session.add(result)
         db.session.commit()
 
@@ -40,16 +41,18 @@ class LokasiResource(Resource):
 
     def patch(self, id):
         parser = reqparse.RequestParser()
-        parser.add_argument('nama_Lokasi', location='json')
-        parser.add_argument('gambar_Lokasi', location='json')
+        parser.add_argument('lokasi_restoran', location='json')
+        parser.add_argument('lat', location='json')
+        parser.add_argument('lon', location='json')
         args = parser.parse_args()
 
         qry = Lokasi.query.get(id)
         if qry is None:
             return {'Status ': 'Not Found'}, 404
 
-        qry.nama_Lokasi = args['nama_Lokasi']
-        qry.gambar_Lokasi = args['gambar_Lokasi']
+        qry.lokasi_restoran = args['lokasi_restoran']
+        qry.lat = args['lat']
+        qry.lat = args['lon']
         db.session.commit()
 
         return marshal(qry, Lokasi.response_fields), 200
@@ -78,7 +81,7 @@ class DaftarLokasi(Resource):
             rows.append(marshal(row, Lokasi.response_fields))
 
         return rows, 200
-        
+
         # parser = reqparse.RequestParser()
         # parser.add_argument('p', type=int, location='args', default=1)
         # parser.add_argument('rp', type=int, location='args', default=25)
@@ -96,16 +99,17 @@ class DaftarLokasi(Resource):
         #     result_respon_restoran = marshal(
         #         respon_restoran, Restoran.response_fields)
         #     lokasi_list['restoran'] = result_respon_restoran
-            
+
         #     lokasi_menu = Menu.query.filter_by(id= lokasi_list['restoran']['menu_id']).first()
         #     result_lokasi_menu = marshal(lokasi_menu, Menu.response_fields)
         #     lokasi_list['restoran']['menu'] = result_lokasi_menu
-            
+
         #     # respon_restoran_menu =Menu.query.filter_by(id=lokasi_list['menu_id']).first()
-            
+
         #     rows.append(lokasi_list)
 
         # return rows, 200
+
 
 class DaftarLokasiRestoran(Resource):
     def get(self):

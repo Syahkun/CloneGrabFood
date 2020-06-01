@@ -12,7 +12,7 @@ const CardMenu = (props) => {
   console.warn("cek compo cardmenu", props);
   return (
     <section>
-      <div className="">
+      <div className="cardresto-comp">
         <Card style={{ width: "18rem" }} className="Card-menu">
           <Card.Img
             value={props.nama_menu}
