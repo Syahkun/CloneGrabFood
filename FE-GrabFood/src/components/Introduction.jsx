@@ -4,7 +4,7 @@ const Introduction = () => {
   return (
     <div className="crop wall-intro">
       <img
-        src="https://food.grab.com/static/page-home/ID-new-4.jpg"
+        src="https://food.grab.com/static/page-home/ID-new-2.jpg"
         alt="..."
       />
     </div>

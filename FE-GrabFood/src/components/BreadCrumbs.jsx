@@ -1,15 +1,27 @@
 import React from "react";
-import { Breadcrumb } from "react-bootstrap";
+// import { Breadcrumb } from "react-bootstrap";
 const BreadCrumbs = (props) => {
   return (
-    <div className="">
-      <Breadcrumb>
-        <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-        <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-          Menu
-        </Breadcrumb.Item>
-        <Breadcrumb.Item active>{props.nama_menu}</Breadcrumb.Item>
-      </Breadcrumb>
+    <div className="bread-res">
+      <p className="">
+        <a href="/" className="">
+          Home&nbsp;&nbsp;
+        </a>
+        <img
+          src="https://food.grab.com/static/images/icons/icon-next.svg"
+          alt=""
+          className=""
+        />
+        <a href="/">&nbsp;&nbsp;Menu&nbsp;&nbsp;</a>
+        <img
+          src="https://food.grab.com/static/images/icons/icon-next.svg"
+          alt=""
+          className=""
+        />{" "}
+        <a href="/" className="" style={{ color: "black" }}>
+          &nbsp;&nbsp;{props.nama_menu}&nbsp;&nbsp;
+        </a>
+      </p>
     </div>
   );
 };

@@ -1,8 +1,9 @@
 import React from "react";
-// import { connect } from "react-redux";
-// import { Link } from "react-router-dom";
-import { Navbar } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Navbar, Container, Col, Row } from "react-bootstrap";
 import $ from "jquery";
+
+//import function
 
 const Navigation = (props) => {
   $(window).scroll(function () {
@@ -16,6 +17,10 @@ const Navigation = (props) => {
       $("#logo-green").addClass("display-none");
     }
   });
+  const namaPengguna = localStorage.getItem("namaPengguna");
+  const postSignout = async () => {
+    await props.doLogout();
+  };
   return (
     <div className="">
       <Navbar id="nav-home">
@@ -35,9 +40,39 @@ const Navigation = (props) => {
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
-          {/* <Navbar.Text>
-            Signed in as: <a href="#login">Mark Otto</a>
-          </Navbar.Text> */}
+          <Navbar.Text className="ml-auto text-navbar">
+            {props.dataPengguna.is_login ? (
+              <Container>
+                <Row>
+                  <Col>
+                    <Link to="/login/pengguna">
+                      <i>{namaPengguna}</i>
+                    </Link>
+                  </Col>
+                  <Col>
+                    <Link to="/">
+                      <i onClick={() => postSignout()}>Keluar</i>{" "}
+                    </Link>
+                  </Col>
+                </Row>
+              </Container>
+            ) : (
+              <Container>
+                <Row>
+                  <Col>
+                    <Link to="/login/pengguna">
+                      <i>Masuk</i>
+                    </Link>
+                  </Col>
+                  <Link to="/daftar/pengguna">
+                    <Col>
+                      <i href="daftar">Daftar</i>{" "}
+                    </Col>
+                  </Link>
+                </Row>
+              </Container>
+            )}
+          </Navbar.Text>
         </Navbar.Collapse>
       </Navbar>
     </div>
@@ -45,3 +80,5 @@ const Navigation = (props) => {
 };
 
 export default Navigation;
+
+// Signed in as: <a href="#login">Mark Otto</a>

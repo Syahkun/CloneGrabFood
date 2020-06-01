@@ -1,34 +1,27 @@
 import React from "react";
-import { Form, FormControl, Container, Row, Button } from "react-bootstrap";
+import { Form, FormControl, Container, Row } from "react-bootstrap";
 
 const SearchPage = (props) => {
   console.warn("ini props searchpage", props);
   return (
-    <Container fluid>
+    <Container fluid style={{ marginTop: "40px" }}>
       <Row>
         <Form inline>
           <FormControl
             type="search"
             onChange={props.inputKeyword}
-            value={props.keyword}
+            value={props.search}
             name="keyword"
-            style={{
-              backgroundColor: "#f7f7f7",
-              marginTop: "50px",
-              width: "210vmin",
-            }}
             id="search2"
-            placeholder="Search"
+            placeholder="Cari makanan atau resto"
             className="mr-sm-2 W-100"
           />
+          <img
+            className="images-search2"
+            src="https://www.flaticon.com/premium-icon/icons/svg/954/954591.svg"
+            alt="..."
+          />
         </Form>
-        <Button
-          onClick={() => props.handleRequestSearch(props.keyword, props.lokasi)}
-          className="button-search mt-2"
-          type="submit"
-        >
-          cari
-        </Button>
       </Row>
     </Container>
   );

@@ -1,19 +1,21 @@
 import React from "react";
 // import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Navbar, FormControl, Button, Form } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
+import Search from "./SearchNavRes";
+// import InputSearch from "./InputSearch";
 // import $ from "jquery";
 
 const Navigation = (props) => {
   console.warn("cek navi 2", props);
   return (
     <div className="">
-      <Navbar id="nav-result">
+      <Navbar id="nav-result" style={{ height: "89px" }}>
         <Navbar.Brand className="logo-box" style={{ marginRight: "7vmin" }}>
-          {" "}
           <Link to="/">
             <img
-              id="logo"
+              id="logo-nav-2"
+              style={{ width: "auto", height: "24px" }}
               src="https://food.grab.com/static/images/logo-grabfood.svg"
               alt="..."
               className="logo-size "
@@ -21,20 +23,8 @@ const Navigation = (props) => {
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle />
-        <Form inline>
-          <FormControl
-            value={props.lokasi}
-            type="text"
-            placeholder="Search"
-            className="mr-sm-2"
-          />
-          <Button variant="outline-success">Search</Button>
-        </Form>
-        <Navbar.Collapse>
-          {/* <Navbar.Text>
-            Signed in as: <a href="#login">Mark Otto</a>
-          </Navbar.Text> */}
-        </Navbar.Collapse>
+        <Search {...props} />
+        <Navbar.Collapse></Navbar.Collapse>
       </Navbar>
     </div>
   );

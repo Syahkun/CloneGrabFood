@@ -8,14 +8,16 @@ const CardIntro = (props) => {
     <div>
       <Card className="Card-intro pt-4">
         <Card.Body>
-          <Card.Title>Selamat Pagi</Card.Title>
+          <Card.Title>
+            <p className="text-titleintro">Selamat Pagi</p>{" "}
+          </Card.Title>
           {/* <Card.Subtitle className="mb-2 text-muted">
             Card Subtitle
           </Card.Subtitle> */}
           <Card.Text>
-            <h1 className="">
+            <p className="text-cardintro">
               Makanannya mau diantar ke mana <br /> hari ini?
-            </h1>
+            </p>
           </Card.Text>
           <Search {...props} />
           {/* <Card.Link href="#">Card Link</Card.Link>
